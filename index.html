@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>Dark Water Labs | Digital Agency</title>
+    <meta name="description" content="Dark Water Labs - A multidisciplinary digital agency specializing in Web, AI, and Design. Led by Douglas Wekesa.">
+    
+    <!-- Google Fonts: Inter (Original Simple Font) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Markdown Parser for AI responses -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Tailwind Config for Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'], // Reverted to Inter
+                    },
+                    colors: {
+                        darkwater: {
+                            900: '#050a10', // Deepest black/blue
+                            800: '#0f172a', // Slate dark
+                            700: '#1e293b',
+                            500: '#EAB308', // Yellow accent
+                            400: '#FACC15', // Lighter Yellow
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                    },
+                    keyframes: {
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 1, boxShadow: '0 0 10px #EAB308' },
+                            '50%': { opacity: .5, boxShadow: '0 0 20px #FACC15' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050a10; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #EAB308;
+        }
+        
+        /* Glassmorphism utility */
+        .glass {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Tool Tabs */
+        .tool-btn.active {
+            background-color: #EAB308;
+            color: black;
+            border-color: #EAB308;
+        }
+        
+        /* Fade In Animation for Gallery */
+        .gallery-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Markdown Styles */
+        .prose-dark h3 { color: #FACC15; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
+        .prose-dark ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1em; }
+        .prose-dark li { margin-bottom: 0.25em; }
+        .prose-dark strong { color: white; }
+    </style>
+</head>
+<body class="bg-darkwater-900 text-gray-300 font-sans antialiased overflow-x-hidden selection:bg-darkwater-500 selection:text-black">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <img src="logo.png" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'" alt="Logo" class="h-10 w-auto object-contain">
+                    <div class="hidden flex items-center gap-2">
+                        <i class="fa-solid fa-droplet text-darkwater-500 text-2xl"></i>
+                        <span class="font-bold text-xl tracking-wider text-white">DARK WATER <span class="text-darkwater-500 font-light">LABS</span></span>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-sm font-medium hover:text-darkwater-400 transition-colors">Home</a>
+                    <a href="#about" class="text-sm font-medium hover:text-darkwater-400 transition-colors">About</a>
+                    <a href="#portfolio" class="text-sm font-medium hover:text-darkwater-400 transition-colors">Work</a>
+                    <a href="#ai-lab" class="text-sm font-medium hover:text-darkwater-400 transition-colors text-darkwater-400"><i class="fa-solid fa-microchip mr-1"></i>AI Lab</a>
+                    <a href="#podcasts" class="text-sm font-medium hover:text-darkwater-400 transition-colors">Podcasts</a>
+                    <a href="#contact" class="px-5 py-2 rounded-full border border-darkwater-500 text-darkwater-400 text-sm hover:bg-darkwater-500 hover:text-black transition-all duration-300">Start Project</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-white hover:text-darkwater-400 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-darkwater-800 border-t border-gray-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 hover:text-white">Home</a>
+                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 hover:text-white">About</a>
+                <a href="#portfolio" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 hover:text-white">Work</a>
+                <a href="#ai-lab" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 hover:text-white text-darkwater-400">AI Lab</a>
+                <a href="#podcasts" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 hover:text-white">Podcasts</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium bg-darkwater-500 text-black mt-4">Start Project</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20">
+        <!-- Background Glow -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-b from-darkwater-900 via-darkwater-900 to-black opacity-90"></div>
+            <!-- Subtle Mesh Grid -->
+            <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="text-darkwater-400 font-semibold tracking-widest uppercase text-xs md:text-sm mb-6 border border-darkwater-500/30 inline-block px-4 py-1 rounded-full bg-darkwater-500/10">
+                Digital Innovation Agency
+            </h2>
+            
+            <h1 class="text-6xl md:text-8xl font-bold text-white mb-6 tracking-tighter leading-none">
+                DARK WATER <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-darkwater-500 to-yellow-200">LABS</span>
+            </h1>
+            
+            <div class="text-xl md:text-2xl font-light text-gray-400 mb-12 max-w-2xl mx-auto">
+                We engineer <span id="typewriter" class="text-white font-normal"></span><span class="cursor-blink">|</span>
+            </div>
+            
+            <!-- Founder Profile (Circular) -->
+            <div class="flex flex-col items-center justify-center mb-12 animate-fade-in-up">
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-yellow-600 to-darkwater-400 rounded-full opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-glow"></div>
+                    <!-- Placeholder for Circular Image -->
+                    <img class="relative w-32 h-32 rounded-full border-4 border-gray-900 object-cover" src="images/doug.png" alt="Douglas Wekesa">
+                </div>
+                <div class="mt-4 text-center">
+                    <h3 class="text-white font-bold text-lg">Douglas Wekesa</h3>
+                    <p class="text-darkwater-500 text-sm uppercase tracking-wider font-semibold">CEO & Founder</p>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="flex justify-center space-x-8 mb-10">
+                <a href="#" class="text-gray-500 hover:text-white text-2xl transition-colors transform hover:scale-110"><i class="fa-brands fa-github"></i></a>
+                <!-- LinkedIn Removed -->
+                <a href="#" class="text-gray-500 hover:text-white text-2xl transition-colors transform hover:scale-110"><i class="fa-brands fa-twitter"></i></a> <!-- X/Twitter -->
+                <a href="#" class="text-gray-500 hover:text-white text-2xl transition-colors transform hover:scale-110"><i class="fa-brands fa-tiktok"></i></a> <!-- TikTok -->
+                <a href="#" class="text-gray-500 hover:text-red-500 text-2xl transition-colors transform hover:scale-110"><i class="fa-brands fa-youtube"></i></a> <!-- Youtube -->
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#portfolio" class="px-8 py-4 bg-darkwater-500 hover:bg-darkwater-400 text-black font-bold rounded-lg shadow-lg shadow-yellow-500/20 transition-all transform hover:-translate-y-1">
+                    View Agency Work
+                </a>
+                <a href="#contact" class="px-8 py-4 bg-transparent border border-gray-700 hover:border-white text-white font-bold rounded-lg transition-all hover:bg-white/5">
+                    Contact The Lab
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agency About Section -->
+    <section id="about" class="py-24 bg-darkwater-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Agency Bio -->
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Innovation Runs Deep</h2>
+                    <p class="text-gray-400 mb-6 leading-relaxed text-lg">
+                        At Dark Water Labs, we don't just navigate the digital current; we shape it. We are a multidisciplinary foundry operating at the intersection of **logic and artistry**. From engineering robust **Full-Stack Web Architectures** to crafting pixel-perfect **Digital Products**, we treat every project as a unique ecosystem waiting to be realized.
+                    </p>
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        Our expertise spans the entire digital spectrum. We leverage **AI Engineering** and **Generative Media** to push creative boundaries, while our **Brand Design** and professional **CV Writing** services ensure your narrative is as compelling as your technology. Whether it's complex backend logic or a sleek frontend interface, we build brands that resonate.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-darkwater-500 transition-colors">
+                            <i class="fa-solid fa-layer-group text-darkwater-500 mb-2"></i>
+                            <h3 class="text-white font-bold">Full-Stack Dev</h3>
+                        </div>
+                        <div class="p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-darkwater-500 transition-colors">
+                            <i class="fa-solid fa-microchip text-purple-500 mb-2"></i>
+                            <h3 class="text-white font-bold">AI Engineering</h3>
+                        </div>
+                        <div class="p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-darkwater-500 transition-colors">
+                            <i class="fa-solid fa-pen-fancy text-pink-500 mb-2"></i>
+                            <h3 class="text-white font-bold">Brand & CV Design</h3>
+                        </div>
+                        <div class="p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-darkwater-500 transition-colors">
+                            <i class="fa-solid fa-wand-magic-sparkles text-yellow-500 mb-2"></i>
+                            <h3 class="text-white font-bold">AI Media Gen</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agency Capabilities -->
+                <div class="bg-gray-900 p-8 rounded-2xl border border-gray-800 relative">
+                    <div class="absolute -top-4 -right-4 w-20 h-20 bg-darkwater-500 rounded-full blur-2xl opacity-20"></div>
+                    <h3 class="text-xl font-bold text-white mb-6">Agency Capabilities</h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-300">Frontend & Backend Stack</span>
+                                <span class="text-xs text-darkwater-500 bg-darkwater-500/10 px-2 py-1 rounded">React / Python / Node</span>
+                            </div>
+                            <div class="w-full bg-gray-800 rounded-full h-2">
+                                <div class="bg-darkwater-500 h-2 rounded-full" style="width: 98%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-300">Digital Product Design</span>
+                                <span class="text-xs text-purple-500 bg-purple-500/10 px-2 py-1 rounded">Figma / Adobe CC</span>
+                            </div>
+                            <div class="w-full bg-gray-800 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-300">AI & LLM Integration</span>
+                                <span class="text-xs text-green-500 bg-green-500/10 px-2 py-1 rounded">Gemini / OpenAI</span>
+                            </div>
+                            <div class="w-full bg-gray-800 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-300">AI Media & Content</span>
+                                <span class="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-1 rounded">Generative Video / Image</span>
+                            </div>
+                            <div class="w-full bg-gray-800 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold text-white">Our Work</h2>
+                <p class="mt-4 text-gray-400">Selected projects delivered for clients recently.</p>
+            </div>
+
+            <!-- Websites -->
+            <h3 class="text-2xl font-bold text-white mb-8 border-l-4 border-darkwater-500 pl-4">Digital Platforms</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <!-- Website Project 1 -->
+                <div class="group relative bg-gray-800 rounded-xl overflow-hidden shadow-xl border border-gray-700 hover:border-darkwater-500 transition-all">
+                    <div class="h-64 bg-gray-700 flex items-center justify-center overflow-hidden">
+                       <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Website 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-white mb-2">Art Threads:Local Art Shop</h4>
+                        <p class="text-gray-400 text-sm mb-4">Full-stack React platform with M-PESA payment processing.</p>
+                        <!-- UPDATE THE HREF BELOW with your Art Threads URL -->
+                        <a href="https://your-art-threads-link.com" target="_blank" class="inline-flex items-center text-darkwater-400 hover:text-white font-semibold">
+                            Visit Website <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Website Project 2 -->
+                <div class="group relative bg-gray-800 rounded-xl overflow-hidden shadow-xl border border-gray-700 hover:border-darkwater-500 transition-all">
+                    <div class="h-64 bg-gray-700 flex items-center justify-center overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Website 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-white mb-2">DW StudyShare</h4>
+                        <p class="text-gray-400 text-sm mb-4">My class's own central hub for sharing notes, past papers, and study guides.</p>
+                        <!-- UPDATE THE HREF BELOW with your DW StudyShare URL -->
+                        <a href="https://dwstudyshare.netlify.app" target="_blank" class="inline-flex items-center text-darkwater-400 hover:text-white font-semibold">
+                            Visit Website <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Creative Gallery -->
+            <h3 class="text-2xl font-bold text-white mb-8 border-l-4 border-purple-500 pl-4">Visual & Media</h3>
+            <div id="graphics-gallery" class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+                
+                <div class="break-inside-avoid group relative overflow-hidden rounded-lg bg-gray-800 border border-gray-700 hover:border-purple-500 transition-colors">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Brand Identity" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col text-center p-4">
+                        <h4 class="text-white font-bold text-lg">Neon Branding</h4>
+                        <p class="text-gray-300 text-sm">Identity System</p>
+                    </div>
+                </div>
+
+                <div class="break-inside-avoid group relative overflow-hidden rounded-lg bg-gray-800 border border-gray-700 hover:border-purple-500 transition-colors">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cyberpunk Art" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col text-center p-4">
+                        <h4 class="text-white font-bold text-lg">Cyberpunk City</h4>
+                        <p class="text-gray-300 text-sm">Illustration</p>
+                    </div>
+                </div>
+                
+                <div class="break-inside-avoid group relative overflow-hidden rounded-lg bg-gray-800 border border-gray-700 hover:border-purple-500 transition-colors">
+                    <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="3D Modeling" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col text-center p-4">
+                        <h4 class="text-white font-bold text-lg">Abstract 3D</h4>
+                        <p class="text-gray-300 text-sm">Blender Render</p>
+                    </div>
+                </div>
+
+                <!-- Hidden Items -->
+                <div class="gallery-hidden hidden break-inside-avoid group relative overflow-hidden rounded-lg bg-gray-800 border border-gray-700 hover:border-purple-500 transition-colors gallery-fade-in">
+                    <img src="https://images.unsplash.com/photo-1635326444826-06c8f4110ae3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="AI Art" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col text-center p-4">
+                        <h4 class="text-white font-bold text-lg">Neural Networks</h4>
+                        <p class="text-gray-300 text-sm">Generative Art</p>
+                    </div>
+                </div>
+                <div class="gallery-hidden hidden break-inside-avoid group relative overflow-hidden rounded-lg bg-gray-800 border border-gray-700 hover:border-purple-500 transition-colors gallery-fade-in">
+                    <img src="https://images.unsplash.com/photo-1558655146-d09347e0b7a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Poster Design" class="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col text-center p-4">
+                        <h4 class="text-white font-bold text-lg">Event Poster</h4>
+                        <p class="text-gray-300 text-sm">Print Design</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <button id="see-more-btn" onclick="toggleGallery()" class="px-8 py-3 border border-purple-500 text-purple-400 font-semibold rounded-full hover:bg-purple-500 hover:text-white transition-all duration-300 group" data-expanded="false">
+                    See More <i class="fa-solid fa-chevron-down ml-2 group-hover:translate-y-1 transition-transform"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Gemini AI LAB Section (Cleaned Up) -->
+    <section id="ai-lab" class="py-24 bg-darkwater-800 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-64 h-64 bg-darkwater-500 rounded-full filter blur-3xl"></div>
+            <div class="absolute bottom-10 right-10 w-64 h-64 bg-purple-500 rounded-full filter blur-3xl"></div>
+        </div>
+
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-8">
+                <span class="text-darkwater-400 tracking-widest text-sm font-bold uppercase"><i class="fa-solid fa-sparkles mr-2"></i>Powered by Gemini 2.5</span>
+                <h2 class="text-3xl md:text-5xl font-bold text-white mt-2 mb-4">Dark Water AI Lab</h2>
+                <p class="text-gray-400">
+                    Interact with our experimental AI tools.
+                </p>
+            </div>
+
+            <!-- Tool Selection Tabs -->
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <!-- Genesis Protocol REMOVED -->
+                <button onclick="switchTool('chroma')" id="btn-chroma" class="tool-btn active px-6 py-3 rounded-full border border-gray-700 text-gray-300 font-medium hover:border-darkwater-500 transition-all">
+                    <i class="fa-solid fa-palette mr-2"></i>Chroma AI
+                </button>
+                <button onclick="switchTool('copy')" id="btn-copy" class="tool-btn px-6 py-3 rounded-full border border-gray-700 text-gray-300 font-medium hover:border-darkwater-500 transition-all">
+                    <i class="fa-solid fa-pen-fancy mr-2"></i>Copy Architect
+                </button>
+            </div>
+
+            <!-- TOOL 2: Chroma AI (Default Active) -->
+            <div id="tool-chroma" class="tool-panel">
+                <div class="bg-black/50 backdrop-blur-sm p-8 rounded-xl border border-purple-900/50 shadow-2xl text-center">
+                    <p class="text-gray-400 mb-4">Describe a mood or setting, and AI will extract a 5-color palette.</p>
+                    <div class="flex gap-2 max-w-lg mx-auto mb-8">
+                         <input type="text" id="chroma-input" placeholder="e.g., 'Sunset over a dusty martian colony'" 
+                           class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-colors">
+                        <button onclick="generatePalette()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-3 rounded-lg transition-all">
+                            Extract ✨
+                        </button>
+                    </div>
+
+                    <div id="chroma-loading" class="hidden py-8">
+                         <div class="flex justify-center gap-2">
+                             <div class="w-4 h-4 rounded-full bg-purple-500 animate-bounce"></div>
+                             <div class="w-4 h-4 rounded-full bg-blue-500 animate-bounce delay-75"></div>
+                             <div class="w-4 h-4 rounded-full bg-green-500 animate-bounce delay-150"></div>
+                         </div>
+                    </div>
+
+                    <div id="chroma-result" class="hidden grid grid-cols-5 gap-0 h-32 rounded-lg overflow-hidden border border-gray-700"></div>
+                    <div id="chroma-codes" class="hidden grid grid-cols-5 gap-0 mt-2 text-center text-xs text-gray-500 font-mono"></div>
+                </div>
+            </div>
+
+            <!-- TOOL 3: Copy Architect -->
+            <div id="tool-copy" class="tool-panel hidden">
+                <div class="bg-black/50 backdrop-blur-sm p-8 rounded-xl border border-pink-900/50 shadow-2xl">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-gray-400 text-sm mb-2">Brand Name</label>
+                            <input type="text" id="copy-name" placeholder="e.g., Ironclad Coffee" 
+                               class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-pink-500 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-sm mb-2">Industry / Vibe</label>
+                            <input type="text" id="copy-vibe" placeholder="e.g., High-end, Industrial, Strong" 
+                               class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-pink-500 transition-colors">
+                        </div>
+                    </div>
+                    <button onclick="generateCopy()" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-4 rounded-lg transition-all mb-8">
+                        Architect Brand Voice ✨
+                    </button>
+                    <div id="copy-loading" class="hidden text-center py-4"><i class="fa-solid fa-pen-nib fa-spin text-pink-500 text-2xl"></i></div>
+                    <div id="copy-result" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div class="bg-gray-900 p-6 rounded-lg border border-gray-700">
+                             <h4 class="text-pink-400 font-bold mb-3 uppercase text-xs tracking-wider">Slogans</h4>
+                             <ul id="copy-slogans" class="space-y-3 text-gray-200 italic"></ul>
+                         </div>
+                         <div class="bg-gray-900 p-6 rounded-lg border border-gray-700">
+                             <h4 class="text-pink-400 font-bold mb-3 uppercase text-xs tracking-wider">Manifesto</h4>
+                             <p id="copy-manifesto" class="text-sm text-gray-300 leading-relaxed"></p>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Podcasts -->
+    <section id="podcasts" class="py-24">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-white mb-2"><i class="fa-brands fa-spotify text-green-500 mr-2"></i>Lab Radio</h2>
+            <p class="text-gray-400 mb-8">Our discussions Mental Health, Spirituality & Self Improvement</p>
+            <div class="bg-black rounded-xl p-4 shadow-2xl border border-gray-800">
+                <!-- REPLACE THE 'src' URL BELOW WITH YOUR SPOTIFY EMBED LINK -->
+                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/5wbI2UTlcTAxTPWS45DoHd?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 relative overflow-hidden bg-darkwater-800">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Start A Transmission</h2>
+                <p class="text-gray-400">Ready to build something extraordinary? Contact the lab.</p>
+            </div>
+            <div class="bg-gray-900/50 backdrop-blur-md p-8 rounded-2xl border border-gray-800 shadow-2xl">
+                <form action="https://formspree.io/f/xaqqqvzk" method="POST" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-400 mb-2">Name</label>
+                            <input type="text" name="name" id="name" required class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-darkwater-500 focus:ring-1 focus:ring-darkwater-500 transition-colors" placeholder="Douglas Wekesa">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-400 mb-2">Email</label>
+                            <input type="email" name="email" id="email" required class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-darkwater-500 focus:ring-1 focus:ring-darkwater-500 transition-colors" placeholder="you@example.com">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-400 mb-2">Message</label>
+                        <textarea name="message" id="message" rows="4" required class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-darkwater-500 focus:ring-1 focus:ring-darkwater-500 transition-colors" placeholder="Tell us about your project..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-darkwater-500 hover:bg-darkwater-400 text-black font-bold py-4 rounded-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-yellow-500/20">
+                        Send Message <i class="fa-solid fa-paper-plane ml-2"></i>
+                    </button>
+                    <p class="text-xs text-gray-500 text-center mt-4">We will receive this directly in our secure inbox.</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: CV/Profile Download Section -->
+    <section id="cv-section" class="py-16 bg-black border-t border-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-2xl font-bold text-white mb-4">Agency Profile & Leadership</h3>
+            <p class="text-gray-400 mb-8 max-w-2xl mx-auto">
+                Interested in the details? Download our Agency Capability Statement or the CEO's professional profile to see why we are the right partner for your next venture.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <!-- UPDATE HREF BELOW for Agency Deck -->
+                <a href="agency_deck.pdf" download class="inline-flex items-center justify-center px-6 py-3 border border-gray-700 rounded-lg text-white hover:bg-gray-800 transition-colors">
+                    <i class="fa-solid fa-file-pdf mr-2 text-red-500"></i> Download Agency Deck
+                </a>
+                
+                <!-- UPDATE HREF BELOW for Founder CV -->
+                <a href="douglas_cv.pdf" download class="inline-flex items-center justify-center px-6 py-3 border border-darkwater-500 text-darkwater-500 rounded-lg hover:bg-darkwater-500 hover:text-black transition-colors">
+                    <i class="fa-solid fa-user-tie mr-2"></i> Download Founder CV
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-10 border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="font-bold text-white text-lg">DARK WATER <span class="text-darkwater-500">LABS</span></span>
+                <p class="text-gray-600 text-sm mt-1">© 2024 Dark Water Labs. All rights reserved.</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
+                <!-- LinkedIn Removed -->
+                <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-twitter text-xl"></i></a>
+                <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-tiktok text-xl"></i></a>
+                <a href="#" class="text-gray-500 hover:text-red-500 transition-colors"><i class="fa-brands fa-youtube text-xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GEMINI AI FLOATING CHATBOT -->
+    <div id="ai-chat-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        <div id="chat-window" class="hidden bg-gray-900 border border-darkwater-500 rounded-2xl w-80 md:w-96 shadow-2xl overflow-hidden mb-4 flex flex-col h-[500px]">
+            <div class="bg-darkwater-800 p-4 border-b border-gray-700 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="font-bold text-white">D.A.R.K. Assistant</span>
+                </div>
+                <button onclick="toggleChat()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-950/80">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full bg-darkwater-500 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-robot text-black text-xs"></i>
+                    </div>
+                    <div class="bg-gray-800 p-3 rounded-r-lg rounded-bl-lg text-sm text-gray-200 border border-gray-700">
+                        Hello. I am the AI construct for Dark Water Labs. Ask me anything about our agency capabilities, past projects, or our CEO Douglas Wekesa.
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 bg-gray-900 border-t border-gray-700 flex gap-2">
+                <input type="text" id="chat-input" placeholder="Ask about Dark Water Labs..." class="flex-1 bg-black border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-darkwater-500" onkeypress="handleChatKey(event)">
+                <button onclick="sendChatMessage()" class="bg-darkwater-500 hover:bg-darkwater-400 text-black rounded-lg px-3 py-2 transition-colors">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        <button onclick="toggleChat()" class="w-14 h-14 bg-darkwater-500 hover:bg-darkwater-400 rounded-full shadow-lg shadow-yellow-500/50 flex items-center justify-center transition-all hover:scale-110 group">
+            <i class="fa-solid fa-message text-black text-xl group-hover:hidden"></i>
+            <i class="fa-solid fa-robot text-black text-xl hidden group-hover:block animate-bounce"></i>
+        </button>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // API Key Handling
+        const apiKey = ""; // System will inject key at runtime
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Typewriter Effect
+        const textElement = document.getElementById('typewriter');
+        const phrases = ["Digital Ecosystems", "AI Solutions", "Visual Stories", "The Future"];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 100;
+
+        function type() {
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+                typeSpeed = 50;
+            } else {
+                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+                typeSpeed = 100;
+            }
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                typeSpeed = 2000;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(type, typeSpeed);
+        }
+
+        document.addEventListener('DOMContentLoaded', type);
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+                navbar.style.background = 'rgba(5, 10, 16, 0.95)';
+            } else {
+                navbar.classList.remove('shadow-lg');
+                navbar.style.background = 'rgba(15, 23, 42, 0.9)';
+            }
+        });
+
+        // Gallery Expand/Collapse Logic
+        function toggleGallery() {
+            const hiddenItems = document.querySelectorAll('.gallery-hidden');
+            const btn = document.getElementById('see-more-btn');
+            const isExpanded = btn.getAttribute('data-expanded') === 'true';
+            
+            if (!isExpanded) {
+                hiddenItems.forEach(item => item.classList.remove('hidden'));
+                btn.innerHTML = 'See Less <i class="fa-solid fa-chevron-up ml-2"></i>';
+                btn.setAttribute('data-expanded', 'true');
+            } else {
+                hiddenItems.forEach(item => item.classList.add('hidden'));
+                btn.innerHTML = 'See More <i class="fa-solid fa-chevron-down ml-2"></i>';
+                btn.setAttribute('data-expanded', 'false');
+            }
+        }
+
+        /* --- AI LAB FEATURES --- */
+
+        // Tab Switching Logic
+        function switchTool(toolId) {
+            // Hide all panels
+            document.querySelectorAll('.tool-panel').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.tool-btn').forEach(b => {
+                b.classList.remove('active', 'bg-darkwater-500', 'text-black', 'border-darkwater-500');
+                b.classList.add('text-gray-300', 'border-gray-700');
+            });
+
+            // Show selected
+            document.getElementById('tool-' + toolId).classList.remove('hidden');
+            
+            // Highlight button
+            const btn = document.getElementById('btn-' + toolId);
+            btn.classList.add('active'); // active class handles styles
+        }
+
+        // TOOL 2: CHROMA AI (Palette)
+        async function generatePalette() {
+            const input = document.getElementById('chroma-input').value.trim();
+            const loading = document.getElementById('chroma-loading');
+            const result = document.getElementById('chroma-result');
+            const codes = document.getElementById('chroma-codes');
+            
+            if (!input) return;
+
+            loading.classList.remove('hidden');
+            result.classList.add('hidden');
+            codes.classList.add('hidden');
+
+            const prompt = `
+                Generate a 5-color palette for the mood: "${input}".
+                Return ONLY a JSON array of 5 hex color strings. Example: ["#ffffff", "#000000", ...].
+                Do not include markdown formatting or json blocks. Just the raw array.
+            `;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: { responseMimeType: "application/json" }
+                    })
+                });
+                
+                const data = await response.json();
+                const colors = JSON.parse(data.candidates[0].content.parts[0].text);
+
+                // Render colors
+                result.innerHTML = '';
+                codes.innerHTML = '';
+                colors.forEach(color => {
+                    const div = document.createElement('div');
+                    div.style.backgroundColor = color;
+                    div.className = "h-full w-full transition-all hover:scale-110";
+                    result.appendChild(div);
+
+                    const codeDiv = document.createElement('div');
+                    codeDiv.innerText = color;
+                    codes.appendChild(codeDiv);
+                });
+
+                loading.classList.add('hidden');
+                result.classList.remove('hidden');
+                codes.classList.remove('hidden');
+
+            } catch (error) {
+                console.error(error);
+                loading.classList.add('hidden');
+                alert("Could not extract colors.");
+            }
+        }
+
+        // TOOL 3: COPY ARCHITECT
+        async function generateCopy() {
+            const name = document.getElementById('copy-name').value.trim();
+            const vibe = document.getElementById('copy-vibe').value.trim();
+            const loading = document.getElementById('copy-loading');
+            const result = document.getElementById('copy-result');
+            const slogansList = document.getElementById('copy-slogans');
+            const manifestoP = document.getElementById('copy-manifesto');
+
+            if (!name || !vibe) return;
+
+            loading.classList.remove('hidden');
+            result.classList.add('hidden');
+
+            const prompt = `
+                For a brand named "${name}" in the "${vibe}" industry:
+                1. Generate 3 short, punchy slogans.
+                2. Write a 50-word brand manifesto (inspiring, bold).
+                
+                Return JSON format: { "slogans": ["s1", "s2", "s3"], "manifesto": "text..." }
+            `;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: { responseMimeType: "application/json" }
+                    })
+                });
+
+                const data = await response.json();
+                const json = JSON.parse(data.candidates[0].content.parts[0].text);
+
+                slogansList.innerHTML = json.slogans.map(s => `<li><i class="fa-solid fa-check text-pink-500 mr-2"></i>${s}</li>`).join('');
+                manifestoP.innerText = json.manifesto;
+
+                loading.classList.add('hidden');
+                result.classList.remove('hidden');
+
+            } catch (error) {
+                console.error(error);
+                loading.classList.add('hidden');
+                alert("Could not generate copy.");
+            }
+        }
+
+        // 2. CHATBOT FUNCTIONS
+        function toggleChat() {
+            const window = document.getElementById('chat-window');
+            if (window.classList.contains('hidden')) {
+                window.classList.remove('hidden');
+                window.classList.add('chat-enter');
+                window.classList.remove('chat-exit');
+                // Focus input
+                setTimeout(() => document.getElementById('chat-input').focus(), 300);
+            } else {
+                window.classList.remove('chat-enter');
+                window.classList.add('chat-exit');
+                setTimeout(() => window.classList.add('hidden'), 250);
+            }
+        }
+
+        function handleChatKey(e) {
+            if (e.key === 'Enter') sendChatMessage();
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const messagesDiv = document.getElementById('chat-messages');
+            const userMsg = input.value.trim();
+
+            if (!userMsg) return;
+
+            // Add User Message
+            messagesDiv.innerHTML += `
+                <div class="flex items-start gap-3 justify-end animate-fade-in">
+                    <div class="bg-darkwater-500 p-3 rounded-l-lg rounded-br-lg text-sm text-black shadow-lg">
+                        ${userMsg}
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-user text-xs text-gray-400"></i>
+                    </div>
+                </div>
+            `;
+            
+            input.value = '';
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            // Add Loading Indicator
+            const loadingId = 'loading-' + Date.now();
+            messagesDiv.innerHTML += `
+                <div id="${loadingId}" class="flex items-start gap-3 animate-fade-in">
+                    <div class="w-8 h-8 rounded-full bg-darkwater-500 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-robot text-black text-xs"></i>
+                    </div>
+                    <div class="bg-gray-800 p-3 rounded-r-lg rounded-bl-lg text-sm text-gray-200 border border-gray-700">
+                        <div class="flex space-x-1">
+                            <div class="w-2 h-2 bg-gray-400 rounded-full typing-dot"></div>
+                            <div class="w-2 h-2 bg-gray-400 rounded-full typing-dot"></div>
+                            <div class="w-2 h-2 bg-gray-400 rounded-full typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            const systemPrompt = `
+                You are "D.A.R.K. Assistant", the AI concierge for Dark Water Labs, a digital agency led by Douglas Wekesa.
+                Tone: Professional, Innovative, Helpful.
+                
+                Facts:
+                - Agency specializes in Web, AI, and Design.
+                - CEO is Douglas Wekesa.
+                - We are open to new projects.
+                
+                Answer the user's question concisely. 
+            `;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        contents: [{ parts: [{ text: "User Question: " + userMsg }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    })
+                });
+
+                const data = await response.json();
+                const botResponse = data.candidates[0].content.parts[0].text;
+
+                // Remove loading and add response
+                document.getElementById(loadingId).remove();
+                
+                messagesDiv.innerHTML += `
+                    <div class="flex items-start gap-3 animate-fade-in">
+                        <div class="w-8 h-8 rounded-full bg-darkwater-500 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-robot text-black text-xs"></i>
+                        </div>
+                        <div class="bg-gray-800 p-3 rounded-r-lg rounded-bl-lg text-sm text-gray-200 border border-gray-700">
+                            ${marked.parse(botResponse)}
+                        </div>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error("Chat Error:", error);
+                document.getElementById(loadingId).remove();
+                messagesDiv.innerHTML += `
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-exclamation text-white text-xs"></i>
+                        </div>
+                        <div class="bg-gray-800 p-3 rounded-r-lg rounded-bl-lg text-sm text-red-200 border border-red-900">
+                            Connection interrupted.
+                        </div>
+                    </div>
+                `;
+            }
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+    </script>
+</body>
+</html>
